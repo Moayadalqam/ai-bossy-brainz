@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/server";
-import { Chat } from "@/components/chat";
+import { ChatWithErrorBoundary } from "@/components/chat-with-error-boundary";
 import { DataStreamHandler } from "@/components/data-stream-handler";
 import type { VisibilityType } from "@/components/visibility-selector";
 import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
@@ -55,7 +55,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 	if (!chatModelFromCookie) {
 		return (
 			<>
-				<Chat
+				<ChatWithErrorBoundary
 					autoResume={true}
 					id={chat.id}
 					initialBotType={initialBotType}
@@ -72,7 +72,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
 	return (
 		<>
-			<Chat
+			<ChatWithErrorBoundary
 				autoResume={true}
 				id={chat.id}
 				initialBotType={initialBotType}

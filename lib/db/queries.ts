@@ -6,6 +6,30 @@ import { ChatSDKError } from "../errors";
 import type { AppUsage } from "../usage";
 import { generateUUID } from "../utils";
 import { createClient } from "../supabase/server";
+import { withRetry } from "../resilience";
+
+// Database-specific retry options for transient failures
+const dbRetryOptions = {
+	maxRetries: 3,
+	initialDelay: 500,
+	maxDelay: 5000,
+	backoffMultiplier: 2,
+	retryableErrors: (error: unknown) => {
+		if (error instanceof Error) {
+			const message = error.message.toLowerCase();
+			return (
+				message.includes("network") ||
+				message.includes("timeout") ||
+				message.includes("connection") ||
+				message.includes("econnreset") ||
+				message.includes("econnrefused") ||
+				message.includes("pgrst") ||
+				message.includes("socket")
+			);
+		}
+		return false;
+	},
+};
 import type {
 	User,
 	Chat,
@@ -128,21 +152,25 @@ export async function updateChatTitle({
 
 export async function deleteChatById({ id }: { id: string }) {
 	try {
-		const supabase = await createClient();
+		return await withRetry(async () => {
+			const supabase = await createClient();
+			const deletedAt = new Date().toISOString();
 
-		// Delete related records first
-		await supabase.from("Vote_v2").delete().eq("chatId", id);
-		await supabase.from("Message_v2").delete().eq("chatId", id);
-		await supabase.from("Stream").delete().eq("chatId", id);
+			// Soft delete related records first
+			await supabase.from("Vote_v2").update({ deletedAt }).eq("chatId", id);
+			await supabase.from("Message_v2").update({ deletedAt }).eq("chatId", id);
+			await supabase.from("Stream").update({ deletedAt }).eq("chatId", id);
 
-		const { data, error } = await supabase
-			.from("Chat")
-			.delete()
-			.eq("id", id)
-			.select();
+			// Soft delete the chat
+			const { data, error } = await supabase
+				.from("Chat")
+				.update({ deletedAt })
+				.eq("id", id)
+				.select();
 
-		if (error) throw error;
-		return data?.[0];
+			if (error) throw error;
+			return data?.[0];
+		}, dbRetryOptions);
 	} catch (_error) {
 		throw new ChatSDKError(
 			"bad_request:database",
@@ -153,33 +181,38 @@ export async function deleteChatById({ id }: { id: string }) {
 
 export async function deleteAllChatsByUserId({ userId }: { userId: string }) {
 	try {
-		const supabase = await createClient();
+		return await withRetry(async () => {
+			const supabase = await createClient();
+			const deletedAt = new Date().toISOString();
 
-		// Get all chat IDs for this user
-		const { data: userChats } = await supabase
-			.from("Chat")
-			.select("id")
-			.eq("userId", userId);
+			// Get all chat IDs for this user (only non-deleted)
+			const { data: userChats } = await supabase
+				.from("Chat")
+				.select("id")
+				.eq("userId", userId)
+				.is("deletedAt", null);
 
-		if (!userChats || userChats.length === 0) {
-			return { deletedCount: 0 };
-		}
+			if (!userChats || userChats.length === 0) {
+				return { deletedCount: 0 };
+			}
 
-		const chatIds = userChats.map((c) => c.id);
+			const chatIds = userChats.map((c) => c.id);
 
-		// Delete related records
-		await supabase.from("Vote_v2").delete().in("chatId", chatIds);
-		await supabase.from("Message_v2").delete().in("chatId", chatIds);
-		await supabase.from("Stream").delete().in("chatId", chatIds);
+			// Soft delete related records
+			await supabase.from("Vote_v2").update({ deletedAt }).in("chatId", chatIds);
+			await supabase.from("Message_v2").update({ deletedAt }).in("chatId", chatIds);
+			await supabase.from("Stream").update({ deletedAt }).in("chatId", chatIds);
 
-		// Delete chats
-		const { data: deletedChats } = await supabase
-			.from("Chat")
-			.delete()
-			.eq("userId", userId)
-			.select();
+			// Soft delete chats
+			const { data: deletedChats } = await supabase
+				.from("Chat")
+				.update({ deletedAt })
+				.eq("userId", userId)
+				.is("deletedAt", null)
+				.select();
 
-		return { deletedCount: deletedChats?.length || 0 };
+			return { deletedCount: deletedChats?.length || 0 };
+		}, dbRetryOptions);
 	} catch (_error) {
 		throw new ChatSDKError(
 			"bad_request:database",
@@ -207,6 +240,7 @@ export async function getChatsByUserId({
 			.from("Chat")
 			.select("*")
 			.eq("userId", id)
+			.is("deletedAt", null)
 			.order("createdAt", { ascending: false })
 			.limit(extendedLimit);
 
@@ -268,6 +302,7 @@ export async function getChatById({ id }: { id: string }) {
 			.from("Chat")
 			.select("*")
 			.eq("id", id)
+			.is("deletedAt", null)
 			.single();
 
 		if (error && error.code !== "PGRST116") throw error; // PGRST116 = no rows
@@ -306,6 +341,7 @@ const getCachedMessages = (chatId: string) => {
 				.from("Message_v2")
 				.select("*")
 				.eq("chatId", chatId)
+				.is("deletedAt", null)
 				.order("createdAt", { ascending: true });
 
 			if (error) throw error;
@@ -356,33 +392,37 @@ export async function deleteMessagesByChatIdAfterTimestamp({
 	timestamp: Date | string;
 }) {
 	try {
-		const supabase = await createClient();
-		const isoTimestamp = typeof timestamp === 'string' ? timestamp : timestamp.toISOString();
+		return await withRetry(async () => {
+			const supabase = await createClient();
+			const isoTimestamp = typeof timestamp === 'string' ? timestamp : timestamp.toISOString();
+			const deletedAt = new Date().toISOString();
 
-		// Get messages to delete
-		const { data: messagesToDelete } = await supabase
-			.from("Message_v2")
-			.select("id")
-			.eq("chatId", chatId)
-			.gte("createdAt", isoTimestamp);
-
-		const messageIds = messagesToDelete?.map((m) => m.id) || [];
-
-		if (messageIds.length > 0) {
-			// Delete votes for these messages
-			await supabase
-				.from("Vote_v2")
-				.delete()
-				.eq("chatId", chatId)
-				.in("messageId", messageIds);
-
-			// Delete messages
-			return await supabase
+			// Get messages to soft delete (only non-deleted ones)
+			const { data: messagesToDelete } = await supabase
 				.from("Message_v2")
-				.delete()
+				.select("id")
 				.eq("chatId", chatId)
-				.in("id", messageIds);
-		}
+				.gte("createdAt", isoTimestamp)
+				.is("deletedAt", null);
+
+			const messageIds = messagesToDelete?.map((m) => m.id) || [];
+
+			if (messageIds.length > 0) {
+				// Soft delete votes for these messages
+				await supabase
+					.from("Vote_v2")
+					.update({ deletedAt })
+					.eq("chatId", chatId)
+					.in("messageId", messageIds);
+
+				// Soft delete messages
+				return await supabase
+					.from("Message_v2")
+					.update({ deletedAt })
+					.eq("chatId", chatId)
+					.in("id", messageIds);
+			}
+		}, dbRetryOptions);
 	} catch (_error) {
 		throw new ChatSDKError(
 			"bad_request:database",
@@ -550,25 +590,29 @@ export async function deleteDocumentsByIdAfterTimestamp({
 	timestamp: Date;
 }) {
 	try {
-		const supabase = await createClient();
+		return await withRetry(async () => {
+			const supabase = await createClient();
+			const deletedAt = new Date().toISOString();
 
-		// Delete suggestions first
-		await supabase
-			.from("Suggestion")
-			.delete()
-			.eq("documentId", id)
-			.gt("documentCreatedAt", timestamp.toISOString());
+			// Soft delete suggestions first
+			await supabase
+				.from("Suggestion")
+				.update({ deletedAt })
+				.eq("documentId", id)
+				.gt("documentCreatedAt", timestamp.toISOString());
 
-		// Delete documents
-		const { data, error } = await supabase
-			.from("Document")
-			.delete()
-			.eq("id", id)
-			.gt("createdAt", timestamp.toISOString())
-			.select();
+			// Soft delete documents
+			const { data, error } = await supabase
+				.from("Document")
+				.update({ deletedAt })
+				.eq("id", id)
+				.gt("createdAt", timestamp.toISOString())
+				.is("deletedAt", null)
+				.select();
 
-		if (error) throw error;
-		return data;
+			if (error) throw error;
+			return data;
+		}, dbRetryOptions);
 	} catch (_error) {
 		throw new ChatSDKError(
 			"bad_request:database",

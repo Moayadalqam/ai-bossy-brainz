@@ -51,6 +51,17 @@ import { toast } from "./toast";
 import { useSidebar } from "./ui/sidebar";
 import { VisibilitySelector, type VisibilityType } from "./visibility-selector";
 
+export interface ChatProps {
+	id: string;
+	initialMessages: ChatMessage[];
+	initialChatModel: string;
+	initialVisibilityType: VisibilityType;
+	isReadonly: boolean;
+	autoResume: boolean;
+	initialLastContext?: AppUsage;
+	initialBotType?: BotType;
+}
+
 export function Chat({
 	id,
 	initialMessages,
@@ -60,16 +71,7 @@ export function Chat({
 	autoResume,
 	initialLastContext,
 	initialBotType = "alexandria",
-}: {
-	id: string;
-	initialMessages: ChatMessage[];
-	initialChatModel: string;
-	initialVisibilityType: VisibilityType;
-	isReadonly: boolean;
-	autoResume: boolean;
-	initialLastContext?: AppUsage;
-	initialBotType?: BotType;
-}) {
+}: ChatProps) {
 	const router = useRouter();
 	const { open } = useSidebar();
 	const isMobile = useIsMobile();
