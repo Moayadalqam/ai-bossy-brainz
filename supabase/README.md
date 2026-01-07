@@ -2,10 +2,19 @@
 
 This directory contains SQL migrations for the Alecci Media AI database.
 
+## Quick Start
+
+**Run these in order in Supabase SQL Editor:**
+
+1. `20260108_soft_delete_fixed.sql` - Adds soft delete columns
+2. `20260108_rls_policies_fixed.sql` - Enables RLS with all policies
+
+The `_fixed` versions are more robust and handle existing policies/columns.
+
 ## Migrations
 
-### 20260108_add_rls_policies.sql
-Enables Row Level Security (RLS) on all tables with comprehensive policies:
+### 20260108_rls_policies_fixed.sql (RECOMMENDED)
+Enables Row Level Security (RLS) on all tables with comprehensive policies.
 
 | Table | Policies |
 |-------|----------|
