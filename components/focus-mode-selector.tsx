@@ -87,7 +87,7 @@ export function FocusModeSelector({
 								: currentModeConfig.color.replace("bg-", "text-"),
 						)}
 					/>
-					<span className="hidden sm:inline font-medium">{currentModeConfig.name}</span>
+					<span className="hidden sm:inline font-bold text-zinc-900">{currentModeConfig.name}</span>
 					<ChevronDown className="h-3.5 w-3.5 opacity-70" />
 				</Button>
 			</PopoverTrigger>

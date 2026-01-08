@@ -77,8 +77,8 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 
 	return (
 		<>
-			<Sidebar className="w-80 border-white/10 border-r bg-sidebar shadow-2xl shadow-black/30 backdrop-blur-xl">
-				<SidebarHeader className="border-white/10 border-b px-4 py-4">
+			<Sidebar className="w-80 border-r border-zinc-200 bg-white shadow-xl">
+				<SidebarHeader className="border-b border-zinc-200 bg-white px-4 py-4">
 					<SidebarMenu>
 						<div className="flex flex-col gap-4">
 							{/* Logo with white background */}
@@ -88,7 +88,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 								onClick={handleNewChat}
 							>
 								<motion.div
-									className="flex items-center justify-center rounded-lg bg-white p-3 shadow-md"
+									className="flex items-center justify-center p-2"
 									whileHover={{ scale: 1.02 }}
 									whileTap={{ scale: 0.98 }}
 								>
@@ -97,7 +97,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 										alt="Alecci Media"
 										width={200}
 										height={65}
-										className="h-auto w-full max-w-[180px]"
+										className="h-auto w-full max-w-[200px]"
 										priority
 									/>
 								</motion.div>
@@ -142,15 +142,15 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 					</SidebarMenu>
 				</SidebarHeader>
 
-				<SidebarContent className="flex-1 overflow-hidden px-4 py-6">
+				<SidebarContent className="flex-1 overflow-hidden bg-white px-4 py-6">
 					<div className="h-full overflow-y-auto">
 						<SidebarHistory user={user} />
 					</div>
 				</SidebarContent>
 
-				<SidebarFooter className="border-white/10 border-t bg-gradient-to-r from-white/5 to-transparent px-6 py-4 backdrop-blur">
+				<SidebarFooter className="border-t border-zinc-200 bg-white px-6 py-4">
 					{/* Navigation Links */}
-					<div className="mt-2 flex flex-col gap-1 rounded-xl bg-white/5 p-2">
+					<div className="mt-2 flex flex-col gap-1 rounded-xl bg-zinc-100 p-2">
 						<Link href="/executives" onClick={() => setOpenMobile(false)}>
 							<Button
 								className="w-full justify-start text-left text-sm"
@@ -232,10 +232,10 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 			<div className="lg:hidden">
 				<Sheet onOpenChange={setIsMobileSidebarOpen} open={isMobileSidebarOpen}>
 					<SheetContent
-						className="w-80 border-white/10 border-r bg-sidebar p-0 backdrop-blur-xl"
+						className="w-80 border-r border-zinc-200 bg-white p-0"
 						side="left"
 					>
-						<SheetHeader className="border-white/10 border-b px-4 py-4">
+						<SheetHeader className="border-b border-zinc-200 bg-white px-4 py-4">
 							<SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 							<div className="flex flex-col gap-4">
 								{/* Logo with white background */}
@@ -244,13 +244,13 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 									href="/"
 									onClick={handleNewChat}
 								>
-									<div className="flex items-center justify-center rounded-lg bg-white p-3 shadow-md">
+									<div className="flex items-center justify-center p-2">
 										<Image
 											src="/images/AM_Logo_Horizontal_4C+(1).webp"
 											alt="Alecci Media"
 											width={180}
 											height={55}
-											className="h-auto w-full max-w-[160px]"
+											className="h-auto w-full max-w-[180px]"
 										/>
 									</div>
 								</Link>
