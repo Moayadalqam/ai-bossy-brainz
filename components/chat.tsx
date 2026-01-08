@@ -18,7 +18,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { useArtifactSelector } from "@/hooks/use-artifact";
+import { useArtifact, useArtifactSelector, initialArtifactData } from "@/hooks/use-artifact";
 import { useAutoResume } from "@/hooks/use-auto-resume";
 import { useAutoSpeak } from "@/hooks/use-auto-speak";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
@@ -82,6 +82,12 @@ export function Chat({
 
 	const { mutate } = useSWRConfig();
 	const { setDataStream } = useDataStream();
+	const { setArtifact } = useArtifact();
+
+	// Reset artifact panel when chat ID changes (new conversation)
+	useEffect(() => {
+		setArtifact(initialArtifactData);
+	}, [id, setArtifact]);
 
 	const [input, setInput] = useState<string>("");
 	const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
