@@ -79,9 +79,9 @@ const PureChatItem = ({
 					className={cn(
 						"group relative my-2 flex min-h-[56px] flex-col justify-center rounded-xl px-3 py-3",
 						"border border-transparent transition-all duration-300",
-						"hover:border-white/10 hover:bg-white/5",
-						isActive && "border-amber-500/30 bg-white/5",
-						isPinned && "bg-gradient-to-r from-amber-950/20 to-transparent"
+						"hover:border-zinc-300 hover:bg-zinc-100",
+						isActive && "border-amber-500 bg-amber-50",
+						isPinned && "bg-gradient-to-r from-amber-100 to-transparent"
 					)}
 					href={`/chat/${chat.id}`}
 					onClick={() => setOpenMobile(false)}
@@ -104,8 +104,8 @@ const PureChatItem = ({
 								)}
 								<span className={cn(
 									"line-clamp-2 font-medium text-sm transition-colors",
-									"text-foreground/90 group-hover:text-foreground",
-									isActive && "text-amber-400"
+									"text-zinc-800 group-hover:text-zinc-900",
+									isActive && "text-amber-700 font-semibold"
 								)}>
 									{chat.title}
 								</span>
@@ -115,8 +115,8 @@ const PureChatItem = ({
 									className={cn(
 										"rounded-full px-2 py-0.5 font-medium text-xs transition-colors",
 										visibilityType === "public"
-											? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30"
-											: "bg-white/5 text-muted-foreground border border-white/10",
+											? "bg-emerald-100 text-emerald-700 border border-emerald-300"
+											: "bg-zinc-100 text-zinc-600 border border-zinc-300",
 									)}
 								>
 									{visibilityType === "public" ? "Public" : "Private"}
@@ -125,7 +125,7 @@ const PureChatItem = ({
 									<span
 										className={cn(
 											"flex items-center gap-1 rounded-full px-2 py-0.5 font-medium text-xs border",
-											chat.topicColor || "bg-slate-500/20 border-slate-500/30 text-slate-300",
+											"bg-zinc-100 border-zinc-300 text-zinc-700",
 										)}
 									>
 										{chat.topic}

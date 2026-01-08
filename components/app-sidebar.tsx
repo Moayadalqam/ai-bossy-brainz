@@ -153,7 +153,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 					<div className="mt-2 flex flex-col gap-1 rounded-xl bg-zinc-100 p-2">
 						<Link href="/executives" onClick={() => setOpenMobile(false)}>
 							<Button
-								className="w-full justify-start text-left text-sm"
+								className="w-full justify-start text-left text-sm text-zinc-700 hover:text-zinc-900 hover:bg-zinc-200"
 								variant="ghost"
 							>
 								<svg
@@ -174,7 +174,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 						</Link>
 						<Link href="/history" onClick={() => setOpenMobile(false)}>
 							<Button
-								className="w-full justify-start text-left text-sm"
+								className="w-full justify-start text-left text-sm text-zinc-700 hover:text-zinc-900 hover:bg-zinc-200"
 								variant="ghost"
 							>
 								<svg
@@ -195,7 +195,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 						</Link>
 						<Link href="/analytics" onClick={() => setOpenMobile(false)}>
 							<Button
-								className="w-full justify-start text-left text-sm"
+								className="w-full justify-start text-left text-sm text-zinc-700 hover:text-zinc-900 hover:bg-zinc-200"
 								variant="ghost"
 							>
 								<BarChart3 className="mr-2 h-4 w-4 text-amber-400" />
@@ -204,7 +204,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 						</Link>
 						<Link href="/strategy-canvas" onClick={() => setOpenMobile(false)}>
 							<Button
-								className="w-full justify-start text-left text-sm"
+								className="w-full justify-start text-left text-sm text-zinc-700 hover:text-zinc-900 hover:bg-zinc-200"
 								variant="ghost"
 							>
 								<svg

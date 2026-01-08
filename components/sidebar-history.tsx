@@ -241,7 +241,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 		return (
 			<SidebarGroup>
 				<SidebarGroupContent>
-					<div className="flex w-full flex-row items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-6 text-center text-muted-foreground text-sm backdrop-blur-sm">
+					<div className="flex w-full flex-row items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-3 py-6 text-center text-zinc-600 text-sm">
 						Login to save and revisit previous chats!
 					</div>
 				</SidebarGroupContent>
@@ -252,7 +252,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 	if (isLoading) {
 		return (
 			<SidebarGroup>
-				<div className="px-3 py-1 font-semibold text-[11px] text-amber-500/80 uppercase tracking-[0.25em]">
+				<div className="px-3 py-1 font-semibold text-[11px] text-amber-600 uppercase tracking-[0.25em]">
 					Today
 				</div>
 				<SidebarGroupContent>
@@ -263,7 +263,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 								key={item}
 							>
 								<div
-									className="h-4 flex-1 animate-pulse rounded-full bg-white/10"
+									className="h-4 flex-1 animate-pulse rounded-full bg-zinc-200"
 									style={{ maxWidth: `${item}%` }}
 								/>
 							</div>
@@ -278,7 +278,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 		return (
 			<SidebarGroup>
 				<SidebarGroupContent>
-					<div className="flex w-full flex-row items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-6 text-center text-muted-foreground text-sm backdrop-blur-sm">
+					<div className="flex w-full flex-row items-center justify-center gap-2 rounded-2xl border border-zinc-200 bg-zinc-50 px-3 py-6 text-center text-zinc-600 text-sm">
 						Your conversations will appear here once you start chatting!
 					</div>
 				</SidebarGroupContent>
@@ -291,9 +291,9 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 			{/* Search and Filter */}
 			<div className="px-2 pb-2 space-y-2">
 				<div className="relative">
-					<Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-muted-foreground" />
+					<Search className="pointer-events-none absolute top-1/2 left-2.5 size-4 -translate-y-1/2 text-zinc-500" />
 					<input
-						className="h-9 w-full rounded-lg border border-white/10 bg-white/5 pr-8 pl-8 text-sm text-foreground placeholder:text-muted-foreground focus:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500/20"
+						className="h-9 w-full rounded-lg border border-zinc-300 bg-white pr-8 pl-8 text-sm text-zinc-900 placeholder:text-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500/30"
 						onChange={(e) => setSearchQuery(e.target.value)}
 						placeholder="Search conversations..."
 						type="text"
@@ -301,7 +301,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 					/>
 					{searchQuery && (
 						<button
-							className="absolute top-1/2 right-2 -translate-y-1/2 rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+							className="absolute top-1/2 right-2 -translate-y-1/2 rounded-sm p-0.5 text-zinc-500 hover:text-zinc-900"
 							onClick={() => setSearchQuery("")}
 							onKeyDown={(e) => {
 								if (e.key === "Enter" || e.key === " ") {
@@ -319,7 +319,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 				{/* Topic Filter */}
 				<div className="relative">
 					<button
-						className="flex h-8 w-full items-center justify-between gap-2 rounded-lg border border-white/10 bg-white/5 px-3 text-sm hover:border-amber-500/30 focus:border-amber-500/30 focus:outline-none focus:ring-1 focus:ring-amber-500/20"
+						className="flex h-8 w-full items-center justify-between gap-2 rounded-lg border border-zinc-300 bg-white px-3 text-sm text-zinc-700 hover:border-amber-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500/30"
 						onClick={() => setShowTopicDropdown(!showTopicDropdown)}
 						onKeyDown={(e) => {
 							if (e.key === "Enter" || e.key === " ") {
@@ -330,23 +330,23 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 						type="button"
 					>
 						<div className="flex items-center gap-2">
-							<Filter className="size-3.5 text-muted-foreground" />
+							<Filter className="size-3.5 text-zinc-500" />
 							{topicFilter ? (
 								<span className="flex items-center gap-1.5">
 									<span
 										className={`size-2 rounded-full ${topicCategories.find((t) => t.name === topicFilter)?.color || "bg-gray-400"}`}
 									/>
-									<span>{topicFilter}</span>
+									<span className="text-zinc-800">{topicFilter}</span>
 								</span>
 							) : (
-								<span className="text-muted-foreground">Filter by topic</span>
+								<span className="text-zinc-500">Filter by topic</span>
 							)}
 						</div>
 						{topicFilter ? (
 							<span
 								role="button"
 								tabIndex={0}
-								className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
+								className="rounded-sm p-0.5 text-zinc-500 hover:text-zinc-900 cursor-pointer"
 								onClick={(e) => {
 									e.stopPropagation();
 									setTopicFilter(null);
@@ -365,7 +365,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 							</span>
 						) : (
 							<svg
-								className={`size-3.5 text-muted-foreground transition-transform ${showTopicDropdown ? "rotate-180" : ""}`}
+								className={`size-3.5 text-zinc-500 transition-transform ${showTopicDropdown ? "rotate-180" : ""}`}
 								fill="none"
 								stroke="currentColor"
 								viewBox="0 0 24 24"
@@ -381,11 +381,11 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 					</button>
 
 					{showTopicDropdown && (
-						<div className="absolute top-full left-0 z-50 mt-1 w-full rounded-lg border border-white/10 bg-black/95 shadow-xl backdrop-blur-xl">
+						<div className="absolute top-full left-0 z-50 mt-1 w-full rounded-lg border border-zinc-200 bg-white shadow-xl">
 							{topicCategories.map((topic) => (
 								<button
 									key={topic.name}
-									className="flex w-full items-center gap-2 px-3 py-2 text-sm text-foreground hover:bg-white/10 first:rounded-t-lg last:rounded-b-lg"
+									className="flex w-full items-center gap-2 px-3 py-2 text-sm text-zinc-800 hover:bg-zinc-100 first:rounded-t-lg last:rounded-b-lg"
 									onClick={() => {
 										setTopicFilter(topic.name);
 										setShowTopicDropdown(false);
@@ -437,7 +437,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 									chatsToDisplay.length === 0
 								) {
 									return (
-										<div className="px-3 py-6 text-center text-muted-foreground text-sm">
+										<div className="px-3 py-6 text-center text-zinc-500 text-sm">
 											{topicFilter && searchQuery.trim()
 												? `No ${topicFilter} conversations match "${searchQuery}"`
 												: topicFilter
@@ -486,7 +486,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
 										{groupedChats.today.length > 0 && (
 											<div>
-												<div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+												<div className="px-2 py-1 text-zinc-500 font-semibold text-xs uppercase tracking-wide">
 													Today
 												</div>
 												{groupedChats.today.map((chat, index) => (
@@ -503,7 +503,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 														/>
 														{index < groupedChats.today.length - 1 && (
 															<div className="relative mx-3 my-2">
-																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
 															</div>
 														)}
 													</div>
@@ -513,7 +513,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
 										{groupedChats.yesterday.length > 0 && (
 											<div>
-												<div className="px-2 py-1 text-sidebar-foreground/50 text-xs">
+												<div className="px-2 py-1 text-zinc-500 font-semibold text-xs uppercase tracking-wide">
 													Yesterday
 												</div>
 												{groupedChats.yesterday.map((chat, index) => (
@@ -530,7 +530,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 														/>
 														{index < groupedChats.yesterday.length - 1 && (
 															<div className="relative mx-3 my-2">
-																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
 															</div>
 														)}
 													</div>
@@ -540,7 +540,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
 										{groupedChats.lastWeek.length > 0 && (
 											<div>
-												<div className="px-3 py-1 font-semibold text-[11px] text-amber-500/70 uppercase tracking-[0.25em]">
+												<div className="px-3 py-1 text-zinc-500 font-semibold text-xs uppercase tracking-wide">
 													Last 7 days
 												</div>
 												{groupedChats.lastWeek.map((chat, index) => (
@@ -557,7 +557,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 														/>
 														{index < groupedChats.lastWeek.length - 1 && (
 															<div className="relative mx-3 my-2">
-																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
 															</div>
 														)}
 													</div>
@@ -567,7 +567,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
 										{groupedChats.lastMonth.length > 0 && (
 											<div>
-												<div className="px-3 py-1 font-semibold text-[11px] text-amber-500/70 uppercase tracking-[0.25em]">
+												<div className="px-3 py-1 text-zinc-500 font-semibold text-xs uppercase tracking-wide">
 													Last 30 days
 												</div>
 												{groupedChats.lastMonth.map((chat, index) => (
@@ -584,7 +584,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 														/>
 														{index < groupedChats.lastMonth.length - 1 && (
 															<div className="relative mx-3 my-2">
-																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
 															</div>
 														)}
 													</div>
@@ -594,7 +594,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 
 										{groupedChats.older.length > 0 && (
 											<div>
-												<div className="px-3 py-1 font-semibold text-[11px] text-amber-500/70 uppercase tracking-[0.25em]">
+												<div className="px-3 py-1 text-zinc-500 font-semibold text-xs uppercase tracking-wide">
 													Older than last month
 												</div>
 												{groupedChats.older.map((chat, index) => (
@@ -611,7 +611,7 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 														/>
 														{index < groupedChats.older.length - 1 && (
 															<div className="relative mx-3 my-2">
-																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-amber-500/20 to-transparent" />
+																<div className="absolute inset-0 h-px bg-gradient-to-r from-transparent via-zinc-300 to-transparent" />
 															</div>
 														)}
 													</div>
