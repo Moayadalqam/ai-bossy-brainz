@@ -10,9 +10,9 @@ export default function ExecutivesPage() {
 	const kim = BOT_PERSONALITIES.kim;
 
 	return (
-		<div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-purple-50">
+		<div className="min-h-screen bg-white">
 			{/* Header */}
-			<header className="border-white/20 border-b bg-white/80 backdrop-blur-xl">
+			<header className="border-b border-zinc-200 bg-white">
 				<div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
 					<div className="flex items-center justify-between">
 						<Link href="/">
@@ -51,7 +51,7 @@ export default function ExecutivesPage() {
 				<div className="container mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
 						{/* Alexandria Alecci */}
-						<Card className="overflow-hidden border-0 bg-gradient-to-br from-white via-rose-50/30 to-white shadow-xl">
+						<Card className="overflow-hidden border border-zinc-200 bg-white shadow-lg">
 							<CardContent className="p-6 sm:p-8 lg:p-10">
 								<div className="flex flex-col items-center text-center sm:flex-row sm:text-left">
 									<div className="relative mb-6 flex-shrink-0 sm:mr-6 sm:mb-0">
@@ -111,7 +111,7 @@ export default function ExecutivesPage() {
 						</Card>
 
 						{/* Kim Mylls */}
-						<Card className="overflow-hidden border-0 bg-gradient-to-br from-white via-blue-50/30 to-white shadow-xl">
+						<Card className="overflow-hidden border border-zinc-200 bg-white shadow-lg">
 							<CardContent className="p-6 sm:p-8 lg:p-10">
 								<div className="flex flex-col items-center text-center sm:flex-row sm:text-left">
 									<div className="relative mb-6 flex-shrink-0 sm:mr-6 sm:mb-0">
@@ -172,7 +172,7 @@ export default function ExecutivesPage() {
 					</div>
 
 					{/* Collaborative Section */}
-					<Card className="mt-8 overflow-hidden border-0 bg-gradient-to-r from-rose-50 via-purple-50 to-indigo-50 shadow-xl lg:mt-12">
+					<Card className="mt-8 overflow-hidden border border-zinc-200 bg-white shadow-lg lg:mt-12">
 						<CardContent className="p-6 text-center sm:p-8 lg:p-10">
 							<div className="mx-auto max-w-3xl">
 								<h2 className="font-bold text-2xl text-slate-900 sm:text-3xl lg:text-4xl">
