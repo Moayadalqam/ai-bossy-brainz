@@ -71,19 +71,24 @@ export function FocusModeSelector({
 					variant="outline"
 					size="sm"
 					className={cn(
-						"gap-2 text-xs h-8",
-						currentMode !== "default" && "border-primary/50",
+						"gap-2 text-sm h-9 px-4",
+						"bg-white/10 border-2 border-amber-500/50 hover:border-amber-500",
+						"hover:bg-amber-500/20 transition-all duration-200",
+						"shadow-md shadow-black/20",
+						currentMode !== "default" && "border-amber-500 bg-amber-500/20",
 						className,
 					)}
 				>
 					<CurrentIcon
 						className={cn(
-							"h-3.5 w-3.5",
-							currentModeConfig.color.replace("bg-", "text-"),
+							"h-4 w-4",
+							currentMode !== "default"
+								? "text-amber-400"
+								: currentModeConfig.color.replace("bg-", "text-"),
 						)}
 					/>
-					<span className="hidden sm:inline">{currentModeConfig.name}</span>
-					<ChevronDown className="h-3 w-3 opacity-50" />
+					<span className="hidden sm:inline font-medium">{currentModeConfig.name}</span>
+					<ChevronDown className="h-3.5 w-3.5 opacity-70" />
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent className="w-72 p-2" align="end">
