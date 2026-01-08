@@ -41,7 +41,7 @@ export const EnhancedChatMessage = memo(
 
 		if (role !== "assistant") {
 			return (
-				<div className="ml-auto max-w-[85%] rounded-2xl border border-stone-200 bg-gradient-to-br from-white to-stone-50 px-4 py-3 text-sm text-stone-800 shadow-sm transition-all hover:shadow-md sm:max-w-[70%]">
+				<div className="ml-auto max-w-[85%] rounded-2xl border border-stone-200 bg-gradient-to-br from-white to-stone-50 px-4 py-1.5 text-sm text-stone-800 shadow-sm transition-all hover:shadow-md sm:max-w-[70%]">
 					{safeContent ? <Response>{safeContent}</Response> : null}
 					{!safeContent && isTyping ? <TypingIndicator /> : null}
 				</div>
@@ -53,9 +53,9 @@ export const EnhancedChatMessage = memo(
 
 		return (
 			<div className="max-w-[85%] sm:max-w-[75%] lg:max-w-[65%]">
-				<div className="relative flex flex-col gap-3 rounded-2xl border border-stone-200 bg-gradient-to-br from-white to-stone-50/50 p-4 shadow-sm transition-all hover:shadow-md">
+				<div className="relative flex flex-col gap-2 rounded-2xl border border-stone-200 bg-gradient-to-br from-white to-stone-50/50 px-4 py-2 shadow-sm transition-all hover:shadow-md">
 					{/* Subtle executive accent line */}
-					<div className="absolute left-0 top-4 bottom-4 w-0.5 rounded-full bg-gradient-to-b from-rose-400 to-rose-600" />
+					<div className="absolute left-0 top-2 bottom-2 w-0.5 rounded-full bg-gradient-to-b from-rose-400 to-rose-600" />
 
 					{/* Header with avatar and name */}
 					<div className="flex items-center gap-3 pl-3">

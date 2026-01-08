@@ -15,7 +15,7 @@ function PureChatHeader({
 	chatId,
 	selectedVisibilityType,
 	isReadonly,
-	selectedBotType = "alexandria",
+	selectedBotType = "collaborative",
 }: {
 	chatId: string;
 	selectedVisibilityType: VisibilityType;

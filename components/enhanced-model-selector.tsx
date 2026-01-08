@@ -37,7 +37,7 @@ interface EnhancedModelSelectorProps {
 export function EnhancedModelSelector({
 	userType = "regular",
 	selectedModelId,
-	selectedExecutive = "alexandria",
+	selectedExecutive = "collaborative",
 	onExecutiveSelect,
 	className,
 }: EnhancedModelSelectorProps) {

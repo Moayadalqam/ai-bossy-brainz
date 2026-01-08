@@ -70,7 +70,7 @@ export function Chat({
 	isReadonly,
 	autoResume,
 	initialLastContext,
-	initialBotType = "alexandria",
+	initialBotType = "collaborative",
 }: ChatProps) {
 	const router = useRouter();
 	const { open } = useSidebar();

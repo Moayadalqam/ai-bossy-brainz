@@ -35,7 +35,7 @@ const getMessageContent = (message: MessageLike) => {
 
 export function EnhancedChat({
 	initialMessages = [],
-	initialBotType = "alexandria",
+	initialBotType = "collaborative",
 	onBotTypeChange,
 }: EnhancedChatProps) {
 	const [selectedBotType, setSelectedBotType] =

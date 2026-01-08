@@ -164,7 +164,7 @@ const PurePreviewMessage = ({
 										transition={{ duration: 0.3 }}
 									>
 										<MessageContent
-											className="max-w-[85%] break-words rounded-2xl border border-stone-200 bg-white px-4 py-3 text-sm text-stone-800 shadow-sm sm:max-w-[70%] sm:px-5 sm:py-4"
+											className="max-w-[85%] break-words rounded-2xl border border-stone-200 bg-white px-4 py-1.5 text-sm text-stone-800 shadow-sm sm:max-w-[70%] sm:px-5 sm:py-2"
 											data-testid="message-content"
 										>
 											<Response>{sanitizeText(part.text)}</Response>
