@@ -78,25 +78,26 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 	return (
 		<>
 			<Sidebar className="w-80 border-white/10 border-r bg-sidebar shadow-2xl shadow-black/30 backdrop-blur-xl">
-				<SidebarHeader className="border-white/10 border-b bg-gradient-to-r from-white/5 to-transparent px-6 py-6">
+				<SidebarHeader className="border-white/10 border-b px-4 py-4">
 					<SidebarMenu>
 						<div className="flex flex-col gap-4">
+							{/* Logo with white background */}
 							<Link
 								className="flex items-center justify-center"
 								href="/"
 								onClick={handleNewChat}
 							>
 								<motion.div
-									className="flex items-center justify-center"
+									className="flex items-center justify-center rounded-lg bg-white p-3 shadow-md"
 									whileHover={{ scale: 1.02 }}
 									whileTap={{ scale: 0.98 }}
 								>
 									<Image
 										src="/images/AM_Logo_Horizontal_4C+(1).webp"
 										alt="Alecci Media"
-										width={180}
-										height={60}
-										className="h-auto w-auto max-h-14"
+										width={200}
+										height={65}
+										className="h-auto w-full max-w-[180px]"
 										priority
 									/>
 								</motion.div>
@@ -234,21 +235,24 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 						className="w-80 border-white/10 border-r bg-sidebar p-0 backdrop-blur-xl"
 						side="left"
 					>
-						<SheetHeader className="border-white/10 border-b bg-gradient-to-r from-white/5 to-transparent px-6 py-6">
+						<SheetHeader className="border-white/10 border-b px-4 py-4">
 							<SheetTitle className="sr-only">Navigation Menu</SheetTitle>
 							<div className="flex flex-col gap-4">
+								{/* Logo with white background */}
 								<Link
 									className="flex items-center justify-center"
 									href="/"
 									onClick={handleNewChat}
 								>
-									<Image
-										src="/images/AM_Logo_Horizontal_4C+(1).webp"
-										alt="Alecci Media"
-										width={160}
-										height={50}
-										className="h-auto w-auto max-h-12"
-									/>
+									<div className="flex items-center justify-center rounded-lg bg-white p-3 shadow-md">
+										<Image
+											src="/images/AM_Logo_Horizontal_4C+(1).webp"
+											alt="Alecci Media"
+											width={180}
+											height={55}
+											className="h-auto w-full max-w-[160px]"
+										/>
+									</div>
 								</Link>
 
 								<div className="flex gap-2">
