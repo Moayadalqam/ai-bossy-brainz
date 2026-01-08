@@ -91,6 +91,64 @@ export async function createUser({
 	}
 }
 
+/**
+ * Ensures a User record exists for the authenticated Supabase Auth user.
+ * Creates one if it doesn't exist. This syncs Supabase Auth users with our custom User table.
+ */
+export async function ensureUserExists({
+	id,
+	email,
+}: {
+	id: string;
+	email: string;
+}) {
+	try {
+		const supabase = await createClient();
+
+		// Check if user already exists
+		const { data: existingUser, error: selectError } = await supabase
+			.from("User")
+			.select("id")
+			.eq("id", id)
+			.single();
+
+		if (selectError && selectError.code !== "PGRST116") {
+			// PGRST116 = no rows found, which is expected for new users
+			throw selectError;
+		}
+
+		if (existingUser) {
+			return existingUser;
+		}
+
+		// User doesn't exist, create one
+		const { data: newUser, error: insertError } = await supabase
+			.from("User")
+			.insert({ id, email })
+			.select()
+			.single();
+
+		if (insertError) {
+			// Handle race condition where user was created between check and insert
+			if (insertError.code === "23505") {
+				// Unique constraint violation - user was just created
+				const { data } = await supabase
+					.from("User")
+					.select("id")
+					.eq("id", id)
+					.single();
+				return data;
+			}
+			throw insertError;
+		}
+
+		return newUser;
+	} catch (error) {
+		console.error("ensureUserExists error:", error);
+		throw new ChatSDKError("bad_request:database", "Failed to ensure user exists");
+	}
+}
+
 
 
 // ============================================
@@ -344,7 +402,10 @@ const getCachedMessages = (chatId: string) => {
 				.is("deletedAt", null)
 				.order("createdAt", { ascending: true });
 
-			if (error) throw error;
+			if (error) {
+				console.error("getCachedMessages Supabase error:", error);
+				throw error;
+			}
 			return data || [];
 		},
 		[`chat-messages-${chatId}`],
@@ -357,8 +418,22 @@ const getCachedMessages = (chatId: string) => {
 
 export async function getMessagesByChatId({ id }: { id: string }) {
 	try {
-		return await getCachedMessages(id);
-	} catch (_error) {
+		// Temporarily bypass cache to debug the issue
+		const supabase = await createClient();
+		const { data, error } = await supabase
+			.from("Message_v2")
+			.select("*")
+			.eq("chatId", id)
+			.is("deletedAt", null)
+			.order("createdAt", { ascending: true });
+
+		if (error) {
+			console.error("getMessagesByChatId Supabase error:", error);
+			throw error;
+		}
+		return data || [];
+	} catch (error) {
+		console.error("getMessagesByChatId error:", error);
 		throw new ChatSDKError(
 			"bad_request:database",
 			"Failed to get messages by chat id",

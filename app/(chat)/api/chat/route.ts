@@ -34,6 +34,7 @@ import { isProductionEnvironment } from "@/lib/constants";
 import {
 	createStreamId,
 	deleteChatById,
+	ensureUserExists,
 	getChatById,
 	getMessageCountByUserId,
 	getMessagesByChatId,
@@ -155,6 +156,12 @@ export async function POST(request: Request) {
 		if (!user) {
 			return new ChatSDKError("unauthorized:chat").toResponse();
 		}
+
+		// Ensure User record exists in our custom User table (syncs with Supabase Auth)
+		await ensureUserExists({
+			id: user.id,
+			email: user.email || "",
+		});
 
 		const userType: UserType = "regular"; // Default to regular for now until user type is in metadata/db
 		const maxMessages = entitlementsByUserType[userType].maxMessagesPerDay;

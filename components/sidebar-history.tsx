@@ -343,8 +343,10 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 							)}
 						</div>
 						{topicFilter ? (
-							<button
-								className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground"
+							<span
+								role="button"
+								tabIndex={0}
+								className="rounded-sm p-0.5 text-muted-foreground hover:text-foreground cursor-pointer"
 								onClick={(e) => {
 									e.stopPropagation();
 									setTopicFilter(null);
@@ -358,10 +360,9 @@ export function SidebarHistory({ user }: { user: User | undefined }) {
 										setShowTopicDropdown(false);
 									}
 								}}
-								type="button"
 							>
 								<X className="size-3.5" />
-							</button>
+							</span>
 						) : (
 							<svg
 								className={`size-3.5 text-muted-foreground transition-transform ${showTopicDropdown ? "rotate-180" : ""}`}

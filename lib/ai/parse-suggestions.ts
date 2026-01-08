@@ -1,6 +1,8 @@
 import type { Suggestion, SuggestionCategory } from "./suggestions-config";
 
-const SUGGESTIONS_REGEX = /```suggestions\s*([\s\S]*?)```/;
+const SUGGESTIONS_CODE_BLOCK_REGEX = /```suggestions\s*([\s\S]*?)```/;
+// Matches raw JSON array with category/text objects at end of message
+const SUGGESTIONS_RAW_JSON_REGEX = /\n*(\[\s*\{[\s\S]*?"category"[\s\S]*?"text"[\s\S]*?\}\s*\])\s*$/;
 const VALID_CATEGORIES: SuggestionCategory[] = [
 	"deep-dive",
 	"pivot",
@@ -14,14 +16,24 @@ export type ParsedContent = {
 };
 
 export function parseSuggestions(text: string): ParsedContent {
-	const match = text.match(SUGGESTIONS_REGEX);
+	// Try code block format first
+	let match = text.match(SUGGESTIONS_CODE_BLOCK_REGEX);
+	let jsonString: string | null = null;
+	let contentWithoutSuggestions: string;
 
-	if (!match) {
-		return { content: text, suggestions: [] };
+	if (match) {
+		jsonString = match[1].trim();
+		contentWithoutSuggestions = text.replace(SUGGESTIONS_CODE_BLOCK_REGEX, "").trim();
+	} else {
+		// Try raw JSON format
+		match = text.match(SUGGESTIONS_RAW_JSON_REGEX);
+		if (match) {
+			jsonString = match[1].trim();
+			contentWithoutSuggestions = text.replace(SUGGESTIONS_RAW_JSON_REGEX, "").trim();
+		} else {
+			return { content: text, suggestions: [] };
+		}
 	}
-
-	const jsonString = match[1].trim();
-	const contentWithoutSuggestions = text.replace(SUGGESTIONS_REGEX, "").trim();
 
 	try {
 		const parsed = JSON.parse(jsonString);
@@ -53,5 +65,5 @@ export function parseSuggestions(text: string): ParsedContent {
 }
 
 export function hasSuggestionsBlock(text: string): boolean {
-	return SUGGESTIONS_REGEX.test(text);
+	return SUGGESTIONS_CODE_BLOCK_REGEX.test(text) || SUGGESTIONS_RAW_JSON_REGEX.test(text);
 }

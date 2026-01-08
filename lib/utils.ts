@@ -162,7 +162,16 @@ export function getTrailingMessageId({
 }
 
 export function sanitizeText(text: string) {
-  return text.replace('<has_function_call>', '');
+  let result = text.replace('<has_function_call>', '');
+
+  // Remove suggestions block with code fence
+  result = result.replace(/```suggestions\s*[\s\S]*?```/g, '');
+
+  // Remove raw JSON suggestions array at the end of message
+  // Matches: [{"category": "...", "text": "..."}, ...]
+  result = result.replace(/\n*\[\s*\{[\s\S]*?"category"[\s\S]*?"text"[\s\S]*?\}\s*\]\s*$/g, '');
+
+  return result.trim();
 }
 
 export function convertToUIMessages(messages: DBMessage[]): ChatMessage[] {
