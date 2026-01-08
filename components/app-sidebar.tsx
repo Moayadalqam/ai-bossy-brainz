@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { BarChart3, Plus, Trash2 } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { User } from "@supabase/supabase-js";
@@ -86,11 +87,18 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 								onClick={handleNewChat}
 							>
 								<motion.div
-									className="flex items-center gap-2"
+									className="flex items-center justify-center"
 									whileHover={{ scale: 1.02 }}
 									whileTap={{ scale: 0.98 }}
 								>
-									<span className="text-2xl font-bold gold-text">Alecci Media</span>
+									<Image
+										src="/images/AM_Logo_Horizontal_4C+(1).webp"
+										alt="Alecci Media"
+										width={180}
+										height={60}
+										className="h-auto w-auto max-h-14"
+										priority
+									/>
 								</motion.div>
 							</Link>
 
@@ -234,7 +242,13 @@ export function AppSidebar({ user }: { user: User | undefined }) {
 									href="/"
 									onClick={handleNewChat}
 								>
-									<span className="text-xl font-bold gold-text">Alecci Media</span>
+									<Image
+										src="/images/AM_Logo_Horizontal_4C+(1).webp"
+										alt="Alecci Media"
+										width={160}
+										height={50}
+										className="h-auto w-auto max-h-12"
+									/>
 								</Link>
 
 								<div className="flex gap-2">
