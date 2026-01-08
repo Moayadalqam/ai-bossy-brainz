@@ -239,6 +239,7 @@ export function PureMessageActions({
 											chatId,
 											messageId: message.id,
 											isUpvoted: true,
+											deletedAt: null,
 										},
 									];
 								},
@@ -288,6 +289,7 @@ export function PureMessageActions({
 											chatId,
 											messageId: message.id,
 											isUpvoted: false,
+											deletedAt: null,
 										},
 									];
 								},
